@@ -10,7 +10,7 @@ import {
   revealVariant,
 } from "../../variants/landingVariants";
 
-const HeaderText = ({ body, type }) => {
+const HeaderText = ({ body, type, size }) => {
   return (
     <Head variants={lineRevealVariant} type={type}>
       {body.split(/(\s+)/).map((word) => {
@@ -22,7 +22,11 @@ const HeaderText = ({ body, type }) => {
                   {char}
                 </LetterSmall>
               ) : (
-                <Letter key={char + "-" + index} variants={revealVariant}>
+                <Letter
+                  key={char + "-" + index}
+                  variants={revealVariant}
+                  size={size}
+                >
                   {char}
                 </Letter>
               );

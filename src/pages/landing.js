@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import Modal from "../Components/Scenes/Clipboard";
 import HeaderText from "../Components/Landing/HeaderText";
@@ -23,10 +23,15 @@ const body2 = "and";
 const body3 = "keep track of your work efficiency. ";
 
 function Landing() {
+  const [windowSize, setWindowSize] = useState(window.screen.availWidth);
+
   const history = useHistory();
   const handleClick = () => {
-    history.push("/login");
+    history.push("/auth/login");
   };
+  window.addEventListener("resize", () => {
+    setWindowSize(window.screen.availWidth);
+  });
 
   return (
     <Container>
@@ -39,8 +44,13 @@ function Landing() {
           <ambientLight args={["#fafafa", 0.8, 30, 1]} />
         </Canvas>
       </ModelCover>
-      <Intro animate="visible" initial="hidden" variants={containerVariant}>
-        <HeaderText body={heading} type="head" />
+      <Intro
+        animate="visible"
+        initial="hidden"
+        variants={containerVariant}
+        size={windowSize}
+      >
+        <HeaderText body={heading} type="head" size={windowSize} />
         <HeaderText body={body} />
         <HeaderText body={body2} />
         <HeaderText body={body3} />

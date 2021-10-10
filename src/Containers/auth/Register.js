@@ -7,7 +7,7 @@ import CustomInput from "../../Components/auth/Input";
 import { registerUser } from "../../services/auth";
 import { setUserData } from "../../slices/userSlice";
 
-const Register = () => {
+const Register = ({ size }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -97,7 +97,7 @@ const Register = () => {
   };
 
   return (
-    <RegisterModal>
+    <RegisterModal size={size}>
       <Head>Join Us</Head>
       <Form autoComplete="off" onSubmit={handleRegister}>
         <CustomInput

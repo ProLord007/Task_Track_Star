@@ -3,6 +3,11 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
+  background: radial-gradient(
+    circle farthest-corner at center top,
+    #46210b,
+    #6e4529
+  );
   height: 100vh;
 `;
 export const ModelCover = styled.div`
@@ -11,13 +16,14 @@ export const ModelCover = styled.div`
 `;
 export const Intro = styled(motion.div)`
   height: max-content;
-  width: 100vw;
+  width: 100%;
   position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  top: 20vh;
+  box-sizing: border-box;
+  ${(props) => (props.size > 786 ? "top: 20vh;" : "top:12vh;padding:10px;")}
 `;
 export const Image = styled(motion.img)``;
 export const Button = styled(motion.button)`

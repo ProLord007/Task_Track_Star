@@ -14,7 +14,7 @@ import { googleAuth, loginUser } from "../../services/auth";
 import { setUserData } from "../../slices/userSlice";
 import CustomInput from "../../Components/auth/Input";
 
-const Login = () => {
+const Login = ({ size }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validEmail, setValidEmail] = useState(true);
@@ -64,7 +64,7 @@ const Login = () => {
     }
   };
   return (
-    <Modal>
+    <Modal size={size}>
       <Head>Welcome to TaskStar!</Head>
       <Form onSubmit={handleLogin} autoComplete="off">
         <CustomInput
@@ -97,9 +97,7 @@ const Login = () => {
         </LoginButton>
         <Rule />
         <Google
-          clientId={
-            "307894135123-ufb7fmgsh0sqm56uqh126c12i651om7l.apps.googleusercontent.com"
-          }
+          clientId="307894135123-ufb7fmgsh0sqm56uqh126c12i651om7l.apps.googleusercontent.com"
           buttonText="Continue with Google"
           onSuccess={responseGoogle}
           onFailure={responseGoogle}

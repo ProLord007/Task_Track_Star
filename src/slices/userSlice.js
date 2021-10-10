@@ -20,12 +20,14 @@ export const userSlice = createSlice({
           full_name: data.full_name,
         };
         state.authToken = data.token;
-        localStorage.setItem("token", data.token);
       }
+    },
+    setToken: (state, action) => {
+      state.authToken = action.payload;
     },
   },
 });
-export const { clearState, setUserData } = userSlice.actions;
+export const { setUserData, setToken } = userSlice.actions;
 
 export const userSelector = (state) => state.user.userData;
 

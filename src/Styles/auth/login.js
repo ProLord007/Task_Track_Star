@@ -6,13 +6,17 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  background: radial-gradient(
+    circle farthest-corner at center top,
+    #46210b,
+    #6e4529
+  );
+  min-height: 100vh;
+  flex-direction: column;
 `;
 
 export const Modal = styled(motion.div)`
   min-height: 420px;
-  width: 450px;
-  margin-top: -90px;
   border-radius: 5px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
@@ -20,23 +24,29 @@ export const Modal = styled(motion.div)`
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 40px;
+  padding: 30px;
   background: wheat;
+  ${(props) =>
+    props.size > 786
+      ? "width: 450px;margin-top: -90px;"
+      : "width:100%;margin:10px;"}
 `;
 
 export const Head = styled.h2`
   font-weight: 600;
-  font-size: 30px;
+  font-size: 1.3rem;
   color: #212020;
   margin-bottom: 15px;
 `;
 export const Signup = styled.div`
   color: wheat;
-  position: absolute;
-  top: 4vh;
-  right: 2vw;
+  ${(props) =>
+    props.size > 786
+      ? "position:absolute;top:4vh;right:2vw;"
+      : "position:relative;margin-top:40px"};
+
   background: none;
-  font-size: smaller;
+  font-size: 0.7rem;
 `;
 
 export const Button = styled.button`
@@ -80,7 +90,7 @@ export const Label = styled.label`
 export const InputBox = styled.div`
   display: flex;
   height: 40px;
-  width: 320px;
+  width: 310px;
   align-items: center;
   border-radius: 4px;
   padding-left: 10px;
@@ -120,4 +130,12 @@ export const Rule = styled.span`
   margin: 10px 0 9px 0;
   height: 1px;
   border-bottom: 1px solid gray;
+`;
+
+export const Image = styled.img`
+  width: 100px;
+  position: absolute;
+  left: 5vw;
+  top: 0;
+  margin: 15px;
 `;
