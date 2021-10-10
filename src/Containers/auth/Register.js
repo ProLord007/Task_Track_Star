@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { Modal, Head, Form, LoginButton } from "../../Styles/auth/login";
-import CustomInput from "./Input";
+import CustomInput from "../../Components/auth/Input";
 import { registerUser } from "../../services/auth";
 import { setUserData } from "../../slices/userSlice";
 

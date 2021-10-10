@@ -1,8 +1,8 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Button, Container, Signup } from "../../Styles/auth/login";
-import Login from "./Login";
-import Register from "./Register";
+import { Button, Container, Signup } from "../Styles/auth/login";
+import Login from "../Containers/auth/Login";
+import Register from "../Containers/auth/Register";
 
 const Auth = () => {
   const history = useHistory();

@@ -1,21 +1,21 @@
 import React from "react";
 import { Canvas } from "@react-three/fiber";
-import Modal from "../Scenes/Clipboard";
-import HeaderText from "./HeaderText";
+import Modal from "../Components/Scenes/Clipboard";
+import HeaderText from "../Components/Landing/HeaderText";
 import { useHistory } from "react-router-dom";
 
 import {
   buttonVariant,
   containerVariant,
   imageVariant,
-} from "../../variants/landingVariants";
+} from "../variants/landingVariants";
 import {
   Button,
   Container,
   Image,
   Intro,
   ModelCover,
-} from "../../Styles/Landing/LandingStyles";
+} from "../Styles/Landing/LandingStyles";
 
 const heading = "Welcome to Task Manager!";
 const body = "An App to help plan your day";

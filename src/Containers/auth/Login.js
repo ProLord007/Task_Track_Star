@@ -12,7 +12,7 @@ import {
 } from "../../Styles/auth/login";
 import { googleAuth, loginUser } from "../../services/auth";
 import { setUserData } from "../../slices/userSlice";
-import CustomInput from "./Input";
+import CustomInput from "../../Components/auth/Input";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -33,7 +33,6 @@ const Login = () => {
       emailError = emailValid ? "" : "Please enter a valid email";
       setValidEmail(emailValid);
     }
-
     let passwordError = "";
     let passwordValid = password.length >= 6;
     if (validatePassword) {

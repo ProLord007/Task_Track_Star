@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Landing from "./Components/Landing/Landing";
-import Dashboard from "./Components/dashboard/dashboard";
-import Auth from "./Components/auth/Auth";
+import Landing from "./pages/landing.js";
+import Dashboard from "./pages/dashboard.js";
+import Auth from "./pages/auth.js";
 
 const Router = () => {
   return (
