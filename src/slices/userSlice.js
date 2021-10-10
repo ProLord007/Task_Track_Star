@@ -4,8 +4,8 @@ const initialState = {
   finished: false,
 };
 
-export const animationSlice = createSlice({
-  name: "animation",
+export const userSlice = createSlice({
+  name: "user",
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
@@ -18,8 +18,8 @@ export const animationSlice = createSlice({
   },
 });
 
-export const { setDone, setNotDone } = animationSlice.actions;
+export const { setDone, setNotDone } = userSlice.actions;
 
-export const animationSelector = (state) => state.animation.finished;
+export const animationSelector = (state) => state.user.finished;
 
-export default animationSlice.reducer;
+export default userSlice.reducer;

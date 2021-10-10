@@ -1,27 +1,28 @@
 import React from "react";
 import { Canvas } from "@react-three/fiber";
-import Modal from "./Components/Scenes/Clipboard";
-import HeaderText from "./Components/Landing/HeaderText";
+import Modal from "../Scenes/Clipboard";
+import HeaderText from "./HeaderText";
 import { useHistory } from "react-router-dom";
+
 import {
   buttonVariant,
   containerVariant,
   imageVariant,
-} from "./variants/landingVariants";
+} from "../../variants/landingVariants";
 import {
   Button,
   Container,
   Image,
   Intro,
   ModelCover,
-} from "./Styles/Landing/LandingStyles";
+} from "../../Styles/Landing/LandingStyles";
 
 const heading = "Welcome to Task Manager!";
 const body = "An App to help plan your day";
 const body2 = "and";
 const body3 = "keep track of your work efficiency. ";
 
-function App() {
+function Landing() {
   const history = useHistory();
   const handleClick = () => {
     history.push("/login");
@@ -53,7 +54,7 @@ function App() {
             color: "#3d1d0a",
             fontWeight: 600,
             boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-            transition: { ease: "easeInOut", duration: 0.5 },
+            transition: { ease: "easeInOut" },
           }}
           onClick={handleClick}
           type="button"
@@ -65,4 +66,4 @@ function App() {
   );
 }
 
-export default App;
+export default Landing;

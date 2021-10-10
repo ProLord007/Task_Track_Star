@@ -4,11 +4,6 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   height: 100vh;
-  background: radial-gradient(
-    circle farthest-corner at center top,
-    #3d1d0a,
-    #6e4529
-  );
 `;
 export const ModelCover = styled.div`
   height: 100%;

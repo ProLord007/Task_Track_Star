@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import animationReducer from "../slices/counterSlice";
+import userReducer from "../slices/userSlice";
 
 export const store = configureStore({
   reducer: {
-    animation: animationReducer,
+    user: userReducer,
   },
 });

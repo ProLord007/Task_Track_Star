@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import App from "./App";
+import Landing from "./Components/Landing/Landing";
 import Login from "./Components/Login/Login";
 
 const Router = () => {
@@ -8,7 +8,7 @@ const Router = () => {
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <App />
+          <Landing />
         </Route>
         <Route path="/login">
           <Login />
