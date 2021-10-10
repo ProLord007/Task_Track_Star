@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  finished: false,
+  userData: null,
+  authToken: "",
 };
 
 export const userSlice = createSlice({
@@ -9,17 +10,23 @@ export const userSlice = createSlice({
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
-    setDone: (state) => {
-      state.finished = true;
-    },
-    setNotDone: (state) => {
-      state.finished = false;
+    setUserData: (state, action) => {
+      const data = JSON.parse(action.payload);
+      if (data) {
+        state.userData = {
+          email: data.email,
+          created_at: data.created_at,
+          id: data.id,
+          full_name: data.full_name,
+        };
+        state.authToken = data.token;
+        localStorage.setItem("token", data.token);
+      }
     },
   },
 });
+export const { clearState, setUserData } = userSlice.actions;
 
-export const { setDone, setNotDone } = userSlice.actions;
-
-export const animationSelector = (state) => state.user.finished;
+export const userSelector = (state) => state.user.userData;
 
 export default userSlice.reducer;

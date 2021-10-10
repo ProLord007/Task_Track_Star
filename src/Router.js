@@ -1,7 +1,8 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Landing from "./Components/Landing/Landing";
-import Login from "./Components/Login/Login";
+import Dashboard from "./Components/dashboard/dashboard";
+import Auth from "./Components/auth/Auth";
 
 const Router = () => {
   return (
@@ -10,8 +11,12 @@ const Router = () => {
         <Route exact path="/">
           <Landing />
         </Route>
-        <Route path="/login">
-          <Login />
+        <Route path="/auth/:component">
+          <Auth />
+        </Route>
+
+        <Route path="/dashboard">
+          <Dashboard />
         </Route>
       </Switch>
     </BrowserRouter>
