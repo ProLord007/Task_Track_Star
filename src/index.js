@@ -5,12 +5,15 @@ import { store } from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import Router from "./Router";
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
     <Suspense fallback={<h1>Loading...</h1>}>
       <Provider store={store}>
-        <Router />
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
       </Provider>
     </Suspense>
   </React.StrictMode>,

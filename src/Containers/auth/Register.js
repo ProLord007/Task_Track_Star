@@ -97,7 +97,16 @@ const Register = ({ size }) => {
   };
 
   return (
-    <RegisterModal size={size}>
+    <RegisterModal
+      size={size}
+      initial={{
+        y: 1000,
+        opacity: 0,
+        transition: { type: "spring", damping: 15 },
+      }}
+      exit={{ y: 1000 }}
+      animate={{ y: 0, opacity: 1 }}
+    >
       <Head>Join Us</Head>
       <Form autoComplete="off" onSubmit={handleRegister}>
         <CustomInput
@@ -141,6 +150,10 @@ const Register = ({ size }) => {
           disabled={
             !validEmail || !validPassword || !validConfirm || !validName
           }
+          whileHover={{
+            scale: [1, 1.05, 1],
+            transition: { yoyo: Infinity, duration: 0.5 },
+          }}
           onClick={() => {
             setValidatePassword(true);
             setValidateEmail(true);

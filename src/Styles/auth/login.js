@@ -1,15 +1,16 @@
 import { motion } from "framer-motion";
 import GoogleLogin from "react-google-login";
 import styled from "styled-components";
+import { colors } from "../../utils/Colors";
 
-export const Container = styled.div`
+export const Container = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: center;
   background: radial-gradient(
     circle farthest-corner at center top,
     #46210b,
-    #6e4529
+    ${colors.primary}
   );
   min-height: 100vh;
   flex-direction: column;
@@ -25,23 +26,21 @@ export const Modal = styled(motion.div)`
   align-items: center;
   flex-direction: column;
   padding: 30px;
-  background: wheat;
-  ${(props) =>
-    props.size > 786
-      ? "width: 450px;margin-top: -90px;"
-      : "width:100%;margin:10px;"}
+  background: ${colors.secondary};
+  ${({ size }) =>
+    size > 786 ? "width: 450px;margin-top: -90px;" : "width:100%;margin:10px;"}
 `;
 
 export const Head = styled.h2`
   font-weight: 600;
   font-size: 1.3rem;
-  color: #212020;
+  color: ${colors.headColor};
   margin-bottom: 15px;
 `;
-export const Signup = styled.div`
-  color: wheat;
-  ${(props) =>
-    props.size > 786
+export const Signup = styled(motion.div)`
+  color: ${colors.secondary};
+  ${({ size }) =>
+    size > 786
       ? "position:absolute;top:4vh;right:2vw;"
       : "position:relative;margin-top:40px"};
 
@@ -49,7 +48,7 @@ export const Signup = styled.div`
   font-size: 0.7rem;
 `;
 
-export const Button = styled.button`
+export const Button = styled(motion.button)`
   margin-left: 20px;
   padding: 10px 15px;
   border-radius: 10px;
@@ -57,9 +56,9 @@ export const Button = styled.button`
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   border: none;
   cursor: pointer;
-  background-color: wheat;
-  border: 3px solid #6e4529;
-  color: #6e4529;
+  background-color: ${colors.secondary};
+  border: 3px solid ${colors.primary};
+  color: ${colors.primary};
   font-weight: 600;
 `;
 export const Form = styled.form`
@@ -103,17 +102,17 @@ export const HelperText = styled.span`
   color: red;
 `;
 
-export const LoginButton = styled.button`
+export const LoginButton = styled(motion.button)`
   border: none;
   padding: 10px;
   margin-top: 10px;
   cursor: pointer;
-  background-color: #6e4529;
-  color: wheat;
+  background-color: ${colors.primary};
+  color: ${colors.secondary};
   width: 100%;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   :hover {
-    background-color: #6e4005;
+    background-color: ${colors.primaryAccent};
     transition: all 0.5s;
   }
 `;
@@ -129,10 +128,10 @@ export const Rule = styled.span`
   width: 100%;
   margin: 10px 0 9px 0;
   height: 1px;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid ${colors.contrast};
 `;
 
-export const Image = styled.img`
+export const Image = styled(motion.img)`
   width: 100px;
   position: absolute;
   left: 5vw;

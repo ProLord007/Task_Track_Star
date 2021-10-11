@@ -64,7 +64,16 @@ const Login = ({ size }) => {
     }
   };
   return (
-    <Modal size={size}>
+    <Modal
+      size={size}
+      initial={{
+        y: 1000,
+        opacity: 0,
+        transition: { type: "spring", damping: 15 },
+      }}
+      exit={{ y: 1000 }}
+      animate={{ y: 0, opacity: 1 }}
+    >
       <Head>Welcome to TaskStar!</Head>
       <Form onSubmit={handleLogin} autoComplete="off">
         <CustomInput
@@ -86,6 +95,10 @@ const Login = ({ size }) => {
           icon="bi:shield-lock"
         />
         <LoginButton
+          whileHover={{
+            scale: [1, 1.05, 1],
+            transition: { yoyo: Infinity, duration: 0.5 },
+          }}
           type="submit"
           disabled={!validEmail || !validPassword}
           onClick={() => {

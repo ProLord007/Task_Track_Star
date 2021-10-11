@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, useLocation } from "react-router-dom";
 import Landing from "./pages/landing.js";
 import Dashboard from "./pages/dashboard.js";
 import Auth from "./pages/auth.js";
@@ -8,9 +8,11 @@ import AuthGuard from "./utils/AuthGuard.js";
 import { useDispatch } from "react-redux";
 import { setToken, setUserData } from "./slices/userSlice.js";
 import { getUserData } from "./services/auth/index.js";
+import { AnimatePresence } from "framer-motion";
 
 const Router = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     const data = localStorage.getItem("token");
@@ -26,25 +28,24 @@ const Router = () => {
       dispatch(setToken(data));
       getUser();
     }
-  }, []);
+  }, [dispatch]);
+
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/">
-          <Landing />
-        </Route>
-        <Route path="/auth/:component">
-          <AuthGuard>
-            <Auth />
-          </AuthGuard>
-        </Route>
-        <Route path="/dashboard">
-          <Guard>
-            <Dashboard />
-          </Guard>
-        </Route>
-      </Switch>
-    </BrowserRouter>
+    <Switch>
+      <Route path="/auth/:component">
+        <AuthGuard>
+          <Auth />
+        </AuthGuard>
+      </Route>
+      <Route path="/dashboard">
+        <Guard>
+          <Dashboard />
+        </Guard>
+      </Route>
+      <Route exact path="/">
+        <Landing />
+      </Route>
+    </Switch>
   );
 };
 
