@@ -11,8 +11,12 @@ import {
 } from "../Styles/dashboard/BoxStyles";
 import { Icon } from "@iconify/react";
 import { colors } from "../utils/Colors";
-import { AnimatePresence, motion } from "framer-motion";
-
+import { motion } from "framer-motion";
+import { addOrg, createOrg } from "../services/organizations";
+import { userSelector } from "../slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setAllData, setOrgData } from "../slices/orgsSlice";
+import { useHistory } from "react-router";
 const JoinVariants = {
   hidden: { x: -300, opacity: 0 },
   visible: { x: 0, opacity: 1 },
@@ -35,6 +39,10 @@ const Box = ({ type, setSelected, selected }) => {
   const [validId, setValidId] = useState(true);
   const [error, setError] = useState({ name: "", desc: "" });
   const [errorJoin, setErrorJoin] = useState("");
+  const data = useSelector(userSelector);
+  const dispatch = useDispatch();
+  const history = useHistory();
+
   useEffect(() => {
     let nameError = "";
     if (validateName) {
@@ -70,12 +78,35 @@ const Box = ({ type, setSelected, selected }) => {
     setErrorJoin(idError);
   }, [id, validateId]);
 
-  const handleCreate = (e) => {
+  console.log(data);
+  const handleCreate = async (e) => {
     e.preventDefault();
+    try {
+      const response = await createOrg({
+        creator: data.id,
+        name: name,
+        desc: desc,
+      });
+      dispatch(setAllData(JSON.parse(response).data));
+      history.push(`/org/${data.id}`);
+    } catch (e) {
+      return e.response;
+    }
   };
-  const handleJoin = (e) => {
+  const handleJoin = async (e) => {
     e.preventDefault();
+    try {
+      const response = await addOrg({
+        org_id: id,
+        userArray: [data.id],
+      });
+      dispatch(setOrgData(JSON.parse(response).data));
+      // history.push(`/org/${data.id}`);
+    } catch (e) {
+      return e.response;
+    }
   };
+
   return (
     <motion.div>
       {type === "join" ? (

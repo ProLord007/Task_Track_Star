@@ -18,8 +18,8 @@ export const userSlice = createSlice({
           created_at: data.created_at,
           id: data.id,
           full_name: data.full_name,
+          org_id: data.org_id,
         };
-        state.authToken = data.token;
       }
     },
     setToken: (state, action) => {
@@ -30,5 +30,6 @@ export const userSlice = createSlice({
 export const { setUserData, setToken } = userSlice.actions;
 
 export const userSelector = (state) => state.user.userData;
+export const selector = (state) => state;
 
 export default userSlice.reducer;

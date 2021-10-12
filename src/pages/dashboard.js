@@ -17,6 +17,7 @@ const RuleVariants = {
 const Dashboard = () => {
   const userData = useSelector(userSelector);
   const [selected, setSelected] = useState(null);
+
   return (
     <Container>
       <Head>Welcome, {userData?.full_name}</Head>

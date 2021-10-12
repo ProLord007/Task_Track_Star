@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Switch, Route, useLocation } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Landing from "./pages/landing.js";
 import Dashboard from "./pages/dashboard.js";
 import Auth from "./pages/auth.js";
@@ -8,11 +8,13 @@ import AuthGuard from "./utils/AuthGuard.js";
 import { useDispatch } from "react-redux";
 import { setToken, setUserData } from "./slices/userSlice.js";
 import { getUserData } from "./services/auth/index.js";
-import { AnimatePresence } from "framer-motion";
+import Organization from "./pages/org.js";
+import { setAllData } from "./slices/orgsSlice.js";
+import { getOrgData } from "./services/organizations/index.js";
+import GuestGuard from "./utils/GuestGuard.js";
 
 const Router = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
 
   useEffect(() => {
     const data = localStorage.getItem("token");
@@ -20,6 +22,10 @@ const Router = () => {
       try {
         const response = await getUserData();
         dispatch(setUserData(response));
+        if (JSON.parse(response).org_id) {
+          const res = await getOrgData({ org_id: JSON.parse(response).org_id });
+          dispatch(setAllData(JSON.parse(res)));
+        }
       } catch (e) {
         console.log(e);
       }
@@ -28,7 +34,7 @@ const Router = () => {
       dispatch(setToken(data));
       getUser();
     }
-  }, [dispatch]);
+  }, []);
 
   return (
     <Switch>
@@ -39,7 +45,14 @@ const Router = () => {
       </Route>
       <Route path="/dashboard">
         <Guard>
-          <Dashboard />
+          <GuestGuard>
+            <Dashboard />
+          </GuestGuard>
+        </Guard>
+      </Route>
+      <Route path="/org/:orgName">
+        <Guard>
+          <Organization />
         </Guard>
       </Route>
       <Route exact path="/">

@@ -11,7 +11,7 @@ import {
   Google,
 } from "../../Styles/auth/login";
 import { googleAuth, loginUser } from "../../services/auth";
-import { setUserData } from "../../slices/userSlice";
+import { setToken, setUserData } from "../../slices/userSlice";
 import CustomInput from "../../Components/auth/Input";
 
 const Login = ({ size }) => {
@@ -49,6 +49,8 @@ const Login = ({ size }) => {
     try {
       const response = await loginUser({ email, password });
       dispatch(setUserData(response));
+      console.log(response);
+      dispatch(setToken(JSON.parse(response).token));
       history.push("/dashboard");
     } catch (e) {
       console.log(e);
