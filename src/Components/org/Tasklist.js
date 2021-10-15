@@ -45,6 +45,7 @@ const Container = styled(motion.div)`
   justify-content: space-between;
   padding: 0 10px;
   cursor: pointer;
+  color: ${colors.primaryAccent};
   :hover {
     background-color: ${colors.secondaryAccent};
     transition: all 0.3s ease;
@@ -52,8 +53,9 @@ const Container = styled(motion.div)`
 `;
 
 const ContainerTasks = styled(motion.div)`
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   text-align: center;
   font-size: 14px;
   flex-direction: column;
+  color: ${colors.primaryAccent};
 `;

@@ -1,11 +1,11 @@
 export const colors = {
   background:
-    "radial-gradient(circle farthest-corner at center top,#46210b,#6e4529);",
-  primary: "#6e4529",
-  secondary: "wheat",
+    "radial-gradient(circle farthest-corner at center ,#fafafa ,rgba(89, 39, 156,0.2));",
+  primary: "#ffcc14",
+  secondary: "#59279c",
   contrast: "gray",
-  headColor: "#212020",
-  primaryAccent: "#6e4005",
+  headColor: "#ffcc14",
+  primaryAccent: "#fff",
   secondaryAccent: "#e3b071",
   error: "red",
 };

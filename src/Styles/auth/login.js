@@ -7,11 +7,7 @@ export const Container = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(
-    circle farthest-corner at center top,
-    #46210b,
-    ${colors.primary}
-  );
+  background: ${colors.background};
   min-height: 100vh;
   flex-direction: column;
 `;
@@ -58,7 +54,7 @@ export const Button = styled(motion.button)`
   cursor: pointer;
   background-color: ${colors.secondary};
   border: 3px solid ${colors.primary};
-  color: ${colors.primary};
+  color: ${colors.primaryAccent};
   font-weight: 600;
 `;
 export const Form = styled.form`
@@ -84,6 +80,7 @@ export const Input = styled.input`
 export const Label = styled.label`
   font-size: 12px;
   font-weight: 500;
+  color: ${colors.primary};
 `;
 
 export const InputBox = styled.div`
@@ -108,12 +105,16 @@ export const LoginButton = styled(motion.button)`
   margin-top: 10px;
   cursor: pointer;
   background-color: ${colors.primary};
-  color: ${colors.secondary};
+  color: ${colors.primaryAccent};
   width: 100%;
+  font-size: 15px;
+  font-weight: 500;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  transition: all 0.5s;
+
   :hover {
-    background-color: ${colors.primaryAccent};
-    transition: all 0.5s;
+    background-color: ${colors.secondaryAccent};
+    color: ${colors.secondary};
   }
 `;
 
