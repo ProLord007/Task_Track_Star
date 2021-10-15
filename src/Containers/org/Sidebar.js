@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addMemberOrg, createTasklist } from "../../services/organizations";
+import {
+  addMemberOrg,
+  createTasklist,
+  removeMemberOrg,
+} from "../../services/organizations";
 import {
   membersSelector,
   setMembers,
   setTasklists,
   tlSelector,
+  removeMember,
 } from "../../slices/orgsSlice";
 import Tasklist from "../../Components/org/Tasklist";
 import {
@@ -70,10 +75,22 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
           email: member,
         });
         setMemberShow(false);
-        dispatch(setMembers([...mms, JSON.parse(response).data]));
+        dispatch(setMembers(JSON.parse(response).data));
       } catch (err) {
         console.log(err.response);
       }
+    }
+  };
+  const handleRemoveMember = async () => {
+    try {
+      const response = await removeMemberOrg({
+        org_id: orgData._id,
+        user_id: memberClicked._id,
+      });
+      dispatch(removeMemberClick());
+      dispatch(removeMember(JSON.parse(response).data));
+    } catch (err) {
+      console.log(err);
     }
   };
   return (
@@ -229,15 +246,18 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
                   margin: "10px",
                   cursor: "pointer",
                 }}
+                onClick={handleRemoveMember}
               />
               <span>{memberClicked.full_name}</span>
               <span>{memberClicked.email}</span>
             </HoverBox>
           )}
         </AnimatePresence>
-        {Object.keys(members).map((id) => (
-          <Member key={id} member={members[id]} id={id} />
-        ))}
+        <AnimatePresence>
+          {Object.keys(members).map((id) => (
+            <Member key={id} member={members[id]} id={id} />
+          ))}
+        </AnimatePresence>
       </ContainerCircle>
       <Hr
         animate={{ opacity: 1, x: 0, transition: { duration: 0.5 } }}

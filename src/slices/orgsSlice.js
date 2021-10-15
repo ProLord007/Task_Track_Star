@@ -38,13 +38,26 @@ export const orgsSlice = createSlice({
       const data = action.payload;
       console.log(data);
       if (data) {
-        state.members = data;
+        state.members[data.id] = data;
+      }
+    },
+    removeMember: (state, action) => {
+      const data = action.payload;
+      console.log(data);
+      if (data) {
+        state.members[data.id] = null;
+        delete state.members[data.id];
       }
     },
   },
 });
-export const { setOrgData, setAllData, setTasklists, setMembers } =
-  orgsSlice.actions;
+export const {
+  setOrgData,
+  setAllData,
+  setTasklists,
+  setMembers,
+  removeMember,
+} = orgsSlice.actions;
 
 export const orgSelector = (state) => state.orgs.orgData;
 export const tlSelector = (state) => state.orgs.tasklists;
