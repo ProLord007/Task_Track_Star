@@ -18,12 +18,14 @@ const Tasklist = ({ id, title, tasks }) => {
         />
       </Container>
       {clicked &&
-        (tasks.id ? (
+        (tasks[id] ? (
           <ContainerTasks>
-            {tasks.id
+            {tasks[id]
               .filter((task) => task.tasklist_id === id)
-              .map((task) => (
-                <span>{task.title}</span>
+              .map((task, index) => (
+                <span>
+                  {index + 1} {task.title}
+                </span>
               ))}
           </ContainerTasks>
         ) : (
@@ -60,5 +62,6 @@ const ContainerTasks = styled(motion.div)`
   text-align: center;
   font-size: 14px;
   flex-direction: column;
+  display: flex;
   color: ${colors.primaryAccent};
 `;
