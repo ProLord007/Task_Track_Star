@@ -12,6 +12,7 @@ export const userSlice = createSlice({
   reducers: {
     setUserData: (state, action) => {
       const data = JSON.parse(action.payload);
+      console.log(data);
       if (data) {
         state.userData = {
           email: data.email,

@@ -7,7 +7,7 @@ import {
 } from "../Styles/dashboard/dashboardStyles";
 import { useSelector } from "react-redux";
 import { userSelector } from "../slices/userSlice";
-import Box from "../Containers/Box";
+import Box from "../Components/dashboard/Box";
 import { AnimatePresence } from "framer-motion";
 
 const RuleVariants = {

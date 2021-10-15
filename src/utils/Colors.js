@@ -6,4 +6,6 @@ export const colors = {
   contrast: "gray",
   headColor: "#212020",
   primaryAccent: "#6e4005",
+  secondaryAccent: "#e3b071",
+  error: "red",
 };

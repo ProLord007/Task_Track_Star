@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
 import { Modal, Head, Form, LoginButton } from "../../Styles/auth/login";
 import CustomInput from "../../Components/auth/Input";
 import { registerUser } from "../../services/auth";
@@ -27,8 +26,6 @@ const Register = ({ size }) => {
     confirm: "",
   });
   const dispatch = useDispatch();
-  const history = useHistory();
-
   useEffect(() => {
     const emailRegex = /\S+@\S+\.\S+/;
 
@@ -90,7 +87,7 @@ const Register = ({ size }) => {
         password: password,
       });
       dispatch(setUserData(response));
-      history.push("/dashboard");
+      // history.push("/dashboard");
     } catch (e) {
       console.log(e);
     }

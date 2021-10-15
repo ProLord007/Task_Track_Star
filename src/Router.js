@@ -34,7 +34,7 @@ const Router = () => {
       dispatch(setToken(data));
       getUser();
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <Switch>

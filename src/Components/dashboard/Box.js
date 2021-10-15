@@ -8,15 +8,14 @@ import {
   Head,
   Helper,
   Input,
-} from "../Styles/dashboard/BoxStyles";
+} from "../../Styles/dashboard/BoxStyles";
 import { Icon } from "@iconify/react";
-import { colors } from "../utils/Colors";
+import { colors } from "../../utils/Colors";
 import { motion } from "framer-motion";
-import { addOrg, createOrg } from "../services/organizations";
-import { userSelector } from "../slices/userSlice";
+import { addMemberOrg, createOrg } from "../../services/organizations";
+import { userSelector } from "../../slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setAllData, setOrgData } from "../slices/orgsSlice";
-import { useHistory } from "react-router";
+import { setAllData, setOrgData } from "../../slices/orgsSlice";
 const JoinVariants = {
   hidden: { x: -300, opacity: 0 },
   visible: { x: 0, opacity: 1 },
@@ -41,7 +40,6 @@ const Box = ({ type, setSelected, selected }) => {
   const [errorJoin, setErrorJoin] = useState("");
   const data = useSelector(userSelector);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   useEffect(() => {
     let nameError = "";
@@ -78,7 +76,6 @@ const Box = ({ type, setSelected, selected }) => {
     setErrorJoin(idError);
   }, [id, validateId]);
 
-  console.log(data);
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
@@ -88,7 +85,7 @@ const Box = ({ type, setSelected, selected }) => {
         desc: desc,
       });
       dispatch(setAllData(JSON.parse(response).data));
-      history.push(`/org/${data.id}`);
+      // history.push(`/org/${data.id}`);
     } catch (e) {
       return e.response;
     }
@@ -96,9 +93,9 @@ const Box = ({ type, setSelected, selected }) => {
   const handleJoin = async (e) => {
     e.preventDefault();
     try {
-      const response = await addOrg({
+      const response = await addMemberOrg({
         org_id: id,
-        userArray: [data.id],
+        email: data.email,
       });
       dispatch(setOrgData(JSON.parse(response).data));
       // history.push(`/org/${data.id}`);

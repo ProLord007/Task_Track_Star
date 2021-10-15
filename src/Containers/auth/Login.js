@@ -13,6 +13,8 @@ import {
 import { googleAuth, loginUser } from "../../services/auth";
 import { setToken, setUserData } from "../../slices/userSlice";
 import CustomInput from "../../Components/auth/Input";
+import { getOrgData } from "../../services/organizations";
+import { setAllData } from "../../slices/orgsSlice";
 
 const Login = ({ size }) => {
   const [email, setEmail] = useState("");
@@ -50,8 +52,10 @@ const Login = ({ size }) => {
       const response = await loginUser({ email, password });
       dispatch(setUserData(response));
       console.log(response);
+      const res = await getOrgData({ org_id: JSON.parse(response).org_id });
+      dispatch(setAllData(JSON.parse(res)));
       dispatch(setToken(JSON.parse(response).token));
-      history.push("/dashboard");
+      // history.push("/dashboard");
     } catch (e) {
       console.log(e);
     }

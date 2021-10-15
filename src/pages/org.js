@@ -1,16 +1,24 @@
 import { motion } from "framer-motion";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { getTasklist } from "../services/organizations";
-import { allDataSelector, orgSelector, setTasklist } from "../slices/orgsSlice";
+import Sidebar from "../Containers/org/Sidebar";
+import { allDataSelector } from "../slices/orgsSlice";
 import { colors } from "../utils/Colors";
 
 const Organization = () => {
   const data = useSelector(allDataSelector);
 
-  console.log(data);
-  return <Container>hi</Container>;
+  return (
+    <Container>
+      <Sidebar
+        tasklists={data.tasklists}
+        orgData={data.orgData}
+        members={data.members}
+        tasks={data.tasks}
+      />
+    </Container>
+  );
 };
 
 export default Organization;

@@ -10,9 +10,9 @@ export const createOrg = async (data) => {
     console.log(e.response);
   }
 };
-export const addOrg = async (data) => {
+export const addMemberOrg = async (data) => {
   try {
-    const response = await api.post("/orgs/addMemberOrg", data, {
+    const response = await api.post("/orgs/add-member-org", data, {
       headers: { "Content-Type": "application/json" },
     });
     return JSON.stringify(response.data);
@@ -32,9 +32,9 @@ export const getOrgData = async (data) => {
   }
 };
 
-export const getTasklist = async (data) => {
+export const createTasklist = async (data) => {
   try {
-    const response = await api.post("/orgs/getTasklist", data, {
+    const response = await api.post("/orgs/createTasklist", data, {
       headers: { "Content-Type": "application/json" },
     });
     return JSON.stringify(response.data);
