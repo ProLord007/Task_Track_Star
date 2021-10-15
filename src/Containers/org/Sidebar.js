@@ -28,6 +28,7 @@ import {
   memberButtonSelector,
   removeMemberClick,
 } from "../../slices/miscSlice";
+import { AnimatePresence } from "framer-motion";
 
 const Sidebar = ({ tasklists, orgData, members, tasks }) => {
   const [show, setShow] = useState(false);
@@ -90,7 +91,10 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
         animate={{ opacity: 1, x: 0, transition: { duration: 0.5 } }}
         initial={{ opacity: 0, x: -500 }}
       />
-      <Subheader>
+      <Subheader
+        animate={{ opacity: 1, x: 0, transition: { duration: 0.5 } }}
+        initial={{ opacity: 0, x: -500 }}
+      >
         <span>Lists</span>
         {show && (
           <Icon
@@ -104,18 +108,36 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
           />
         )}
       </Subheader>
-      {!show && <Button onClick={handleAddClick}>Add Tasklist</Button>}
-      {show && (
-        <Form onSubmit={handleCreateList}>
-          <Input
-            type="text"
-            placeholder="Title"
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <Button>Create</Button>
-          {invalid && <HelperText>* Min 5 characters.</HelperText>}
-        </Form>
-      )}
+      <AnimatePresence>
+        {!show && (
+          <Button
+            onClick={handleAddClick}
+            exit={{ opacity: 0, x: -200 }}
+            animate={{ x: 0 }}
+            initial={{ x: -200 }}
+          >
+            Add Tasklist
+          </Button>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {show && (
+          <Form
+            onSubmit={handleCreateList}
+            exit={{ opacity: 0, x: -200 }}
+            initial={{ x: -200, opacity: 0 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            <Input
+              type="text"
+              placeholder="Title"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <Button>Create</Button>
+            {invalid && <HelperText>* Min 5 characters.</HelperText>}
+          </Form>
+        )}
+      </AnimatePresence>
       <Container>
         {tasklists.map((tasklist, index) => (
           <Tasklist
@@ -130,7 +152,10 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
         animate={{ opacity: 1, x: 0, transition: { duration: 0.5 } }}
         initial={{ opacity: 0, x: -500 }}
       />
-      <Subheader>
+      <Subheader
+        animate={{ opacity: 1, x: 0, transition: { duration: 0.5 } }}
+        initial={{ opacity: 0, x: -500 }}
+      >
         <span>Members</span>
         {memberShow && (
           <Icon
@@ -144,48 +169,72 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
           />
         )}
       </Subheader>
-      {!memberShow && <Button onClick={handleMemberClick}>Add Member</Button>}
-      {memberShow && (
-        <Form onSubmit={handleMemberAdd}>
-          <Input
-            type="email"
-            placeholder="Member Email"
-            onChange={(e) => setMember(e.target.value)}
-          />
-          <Button>Add</Button>
-          {invalid && <HelperText>Email is required.</HelperText>}
-        </Form>
-      )}
-      <ContainerCircle>
-        {memberClicked && (
-          <HoverBox>
-            <Icon
-              icon="clarity:window-close-line"
-              width="20"
-              style={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                margin: "10px",
-                cursor: "pointer",
-              }}
-              onClick={() => dispatch(removeMemberClick())}
-            />
-            <Icon
-              icon="gg:remove"
-              width="20"
-              style={{
-                position: "absolute",
-                bottom: 0,
-                right: 0,
-                margin: "10px",
-                cursor: "pointer",
-              }}
-            />
-            <span>{memberClicked.full_name}</span>
-            <span>{memberClicked.email}</span>
-          </HoverBox>
+      <AnimatePresence>
+        {!memberShow && (
+          <Button
+            exit={{ opacity: 0, x: -200 }}
+            animate={{ x: 0 }}
+            initial={{ x: -200 }}
+            onClick={handleMemberClick}
+          >
+            Add Member
+          </Button>
         )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {memberShow && (
+          <Form
+            onSubmit={handleMemberAdd}
+            exit={{ opacity: 0, x: -200 }}
+            initial={{ x: -200, opacity: 0 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            <Input
+              type="email"
+              placeholder="Member Email"
+              onChange={(e) => setMember(e.target.value)}
+            />
+            <Button>Add</Button>
+            {invalid && <HelperText>Email is required.</HelperText>}
+          </Form>
+        )}
+      </AnimatePresence>
+      <ContainerCircle>
+        <AnimatePresence>
+          {memberClicked && (
+            <HoverBox
+              exit={{ opacity: 0, x: -200 }}
+              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, x: -200 }}
+            >
+              <Icon
+                icon="clarity:window-close-line"
+                width="20"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  margin: "10px",
+                  cursor: "pointer",
+                }}
+                onClick={() => dispatch(removeMemberClick())}
+              />
+              <Icon
+                icon="gg:remove"
+                width="20"
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  right: 0,
+                  margin: "10px",
+                  cursor: "pointer",
+                }}
+              />
+              <span>{memberClicked.full_name}</span>
+              <span>{memberClicked.email}</span>
+            </HoverBox>
+          )}
+        </AnimatePresence>
         {Object.keys(members).map((id) => (
           <Member key={id} member={members[id]} id={id} />
         ))}

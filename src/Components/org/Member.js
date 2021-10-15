@@ -7,7 +7,16 @@ const Member = ({ member }) => {
   const dispatch = useDispatch();
   return (
     <>
-      <MemberContainer onClick={() => dispatch(setMemberClick(member))}>
+      <MemberContainer
+        animate={{
+          opacity: 1,
+          rotateZ: 360,
+          x: 0,
+          transition: { duration: 0.5 },
+        }}
+        initial={{ opacity: 0, x: -50 }}
+        onClick={() => dispatch(setMemberClick(member))}
+      >
         <span>{member.full_name[0]}</span>
       </MemberContainer>
     </>
