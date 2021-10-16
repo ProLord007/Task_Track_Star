@@ -7,6 +7,7 @@ import { colors } from "../../utils/Colors";
 import TaskCard from "./TaskCard";
 
 const ListArea = ({ tasklist, tasks }) => {
+  const [tasksNew, setTasksNew] = useState(tasks);
   const [title, setTitle] = useState("");
   const [show, setShow] = useState(false);
   const [desc, setDesc] = useState("");
@@ -20,7 +21,9 @@ const ListArea = ({ tasklist, tasks }) => {
         status: "progress",
         desc: desc,
       });
-      console.log(response);
+      setTasksNew([...tasksNew, JSON.parse(response).data]);
+      console.log(tasksNew);
+      setShow(false);
     } catch (err) {
       console.log(err);
     }
@@ -60,7 +63,7 @@ const ListArea = ({ tasklist, tasks }) => {
       )}
 
       <Body>
-        {tasks.map((task, index) => (
+        {tasksNew.map((task, index) => (
           <TaskCard task={task} index={index} />
         ))}
       </Body>

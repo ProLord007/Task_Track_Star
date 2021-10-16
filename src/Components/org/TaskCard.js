@@ -1,31 +1,115 @@
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { addAssignee, changeStatus } from "../../services/organizations";
 import { membersSelector } from "../../slices/orgsSlice";
+import { userSelector } from "../../slices/userSlice";
 import { colors } from "../../utils/Colors";
+import Member from "./Member";
 
 const TaskCard = ({ task, index }) => {
   const members = useSelector(membersSelector);
+  const user = useSelector(userSelector);
+  const [selectedMembers, setSelectedMembers] = useState([]);
+  const [assignees, setAssignees] = useState(task.assignees);
+  const [add, setAdd] = useState(false);
+  const [status, setStatus] = useState(task.status);
+  const handleAddAssignee = async () => {
+    if (selectedMembers.length > 0)
+      try {
+        const response = await addAssignee({
+          task_id: task._id,
+          userArray: selectedMembers,
+        });
+        setAssignees([...assignees, ...JSON.parse(response).data]);
+        setAdd(false);
+      } catch (err) {
+        console.log(err);
+      }
+  };
+  const change = (status) => {
+    if (status === "pending") {
+      return "progress";
+    } else if (status === "progress") {
+      return "completed";
+    } else if (status === "completed") {
+      return "pending";
+    }
+  };
+  const handleStatusChange = async () => {
+    try {
+      const response = await changeStatus({
+        task_id: task._id,
+        user_id: user.id,
+        status: change(status),
+      });
+      setStatus(JSON.parse(response).data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <Container>
       <CardHead>
         <span>{index + 1})</span>
         <span> {task.title}</span>
-        <Status />
+        <Status type={status} onClick={handleStatusChange} />
       </CardHead>
       <CardBody>
         <span>{task.desc}</span>
         <TaskMembers>
-          <TaskHead>Assignees</TaskHead>
+          {add && (
+            <MembersCard>
+              <Button onClick={handleAddAssignee}>
+                <Icon icon="carbon:add" />
+              </Button>
+              {Object.keys(members).map((id) => {
+                if (!task.assignees.includes(id))
+                  return (
+                    <Member
+                      key={id}
+                      member={members[id]}
+                      id={id}
+                      type="taskAdd"
+                      selectedMembers={selectedMembers}
+                      setSelectedMembers={setSelectedMembers}
+                    />
+                  );
+                return (
+                  <Member
+                    key={id}
+                    member={members[id]}
+                    id={id}
+                    type="taskAddDone"
+                    selectedMembers={selectedMembers}
+                    setSelectedMembers={setSelectedMembers}
+                  />
+                );
+              })}
+            </MembersCard>
+          )}
 
-          {task.assignees.length > 0 ? (
-            task.assignees.map((member) => (
+          <TaskHead>
+            <span>Assignees</span>
+            <Icon
+              icon="ant-design:user-add-outlined"
+              style={{ cursor: "pointer" }}
+              width="20"
+              onClick={() => setAdd(!add)}
+            />
+          </TaskHead>
+
+          {assignees.length > 0 ? (
+            assignees.map((member) => (
               <Assigned>
                 <span>{members[member].full_name}</span>
                 <span>
-                  <Icon icon="clarity:remove-solid" />
+                  <Icon
+                    icon="clarity:remove-solid"
+                    style={{ cursor: "pointer" }}
+                  />
                 </span>
               </Assigned>
             ))
@@ -64,7 +148,16 @@ const CardBody = styled(motion.div)`
 `;
 
 const Status = styled(motion.div)`
-  background-color: ${colors.error};
+  ${({ type }) => {
+    if (type === "progress") {
+      return `background-color:${colors.progress};`;
+    } else if (type === "pending") {
+      return `background-color:${colors.error};`;
+    } else if (type === "completed") {
+      return `background-color:${colors.completed};`;
+    }
+  }}
+  cursor:pointer;
   width: 13px;
   height: 13px;
   border-radius: 50%;
@@ -91,7 +184,36 @@ const Assigned = styled(motion.div)`
   padding: 3px 15px;
 `;
 const TaskHead = styled(motion.span)`
-  padding: 10px;
+  padding: 10px 20px;
   margin-bottom: 5px;
   border-bottom: 2px dashed ${colors.backgroundAccent};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const MembersCard = styled(motion.div)`
+  margin-top: -50px;
+  width: 200px;
+  padding: 5px;
+  background-color: ${colors.secondary};
+  overflow-x: scroll;
+  display: flex;
+  position: relative;
+`;
+
+const Button = styled(motion.button)`
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${colors.primary};
+  border: none;
+  outline: none;
+  padding: 5px;
 `;

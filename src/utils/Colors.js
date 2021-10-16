@@ -9,4 +9,6 @@ export const colors = {
   primaryAccent: "#fff",
   secondaryAccent: "#e3b071",
   error: "red",
+  progress: "lime",
+  completed: "black",
 };
