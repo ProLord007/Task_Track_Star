@@ -8,7 +8,7 @@ export const colors = {
   headColor: "#ffcc14",
   primaryAccent: "#fff",
   secondaryAccent: "#e3b071",
-  error: "red",
+  error: "rgb(150,10,0)",
   progress: "lime",
   completed: "black",
 };

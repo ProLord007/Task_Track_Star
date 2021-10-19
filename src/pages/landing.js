@@ -16,7 +16,6 @@ import {
   Intro,
   ModelCover,
 } from "../Styles/Landing/LandingStyles";
-import { colors } from "../utils/Colors";
 
 const heading = "Welcome to Task Star!";
 const body = "An App to help plan your day";
@@ -60,10 +59,7 @@ function Landing() {
           variants={buttonVariant}
           whileHover={{
             scale: 1.1,
-            borderColor: "#3d1d0a",
-            background: `${colors.secondary}`,
-            color: "#3d1d0a",
-            fontWeight: 600,
+            fontWeight: 500,
             boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
             transition: { ease: "easeInOut" },
           }}

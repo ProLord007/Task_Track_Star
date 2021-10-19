@@ -6,10 +6,11 @@ import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import Router from "./Router";
 import { BrowserRouter } from "react-router-dom";
+import Loading from "./utils/Loading";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Suspense fallback={<h1>Loading...</h1>}>
+    <Suspense fallback={<Loading type="Loading..." />}>
       <Provider store={store}>
         <BrowserRouter>
           <Router />

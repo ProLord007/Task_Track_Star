@@ -23,7 +23,7 @@ const Tasklist = ({ id, title, tasks }) => {
             {tasks[id]
               .filter((task) => task.tasklist_id === id)
               .map((task, index) => (
-                <span>
+                <span key={index}>
                   {index + 1} {task.title}
                 </span>
               ))}

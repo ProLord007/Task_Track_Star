@@ -15,6 +15,7 @@ import { setToken, setUserData } from "../../slices/userSlice";
 import CustomInput from "../../Components/auth/Input";
 import { getOrgData } from "../../services/organizations";
 import { setAllData } from "../../slices/orgsSlice";
+import { isLoading } from "../../slices/miscSlice";
 
 const Login = ({ size }) => {
   const [email, setEmail] = useState("");
@@ -25,7 +26,6 @@ const Login = ({ size }) => {
   const [validateEmail, setValidateEmail] = useState(false);
   const [error, setError] = useState({ email: "", password: "" });
   const dispatch = useDispatch();
-  const history = useHistory();
 
   useEffect(() => {
     const emailRegex = /\S+@\S+\.\S+/;
@@ -48,25 +48,34 @@ const Login = ({ size }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    dispatch(isLoading(true));
     try {
       const response = await loginUser({ email, password });
       dispatch(setUserData(response));
       console.log(response);
       const res = await getOrgData({ org_id: JSON.parse(response).org_id });
+      if (res) {
+        dispatch(isLoading(false));
+      }
       dispatch(setAllData(JSON.parse(res)));
       dispatch(setToken(JSON.parse(response).token));
       // history.push("/dashboard");
     } catch (e) {
       console.log(e);
+      dispatch(isLoading(false));
     }
   };
   const responseGoogle = async (res) => {
+    dispatch(isLoading(true));
+
     try {
       const response = await googleAuth({ token: res.tokenId });
       dispatch(setUserData(response));
-      history.push("/dashboard");
+      if (response) dispatch(isLoading(false));
+      // history.push("/dashboard");
     } catch (e) {
       console.log(e);
+      dispatch(isLoading(false));
     }
   };
   return (

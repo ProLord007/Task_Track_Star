@@ -64,7 +64,7 @@ const ListArea = ({ tasklist, tasks }) => {
 
       <Body>
         {tasksNew.map((task, index) => (
-          <TaskCard task={task} index={index} />
+          <TaskCard key={index} task={task} index={index} />
         ))}
       </Body>
     </Container>

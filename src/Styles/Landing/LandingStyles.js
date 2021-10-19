@@ -27,10 +27,7 @@ export const Button = styled(motion.button)`
   border-radius: 5px;
   border: 2px solid ${colors.secondary};
   cursor: pointer;
-  background: radial-gradient(
-    circle farthest-corner at center top,
-    #3d1d0a,
-    ${colors.primary}
-  );
+  font-weight: 400;
+  background: ${colors.secondaryAccent};
   color: ${colors.secondary};
 `;

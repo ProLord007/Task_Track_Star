@@ -65,11 +65,11 @@ const TaskCard = ({ task, index }) => {
               <Button onClick={handleAddAssignee}>
                 <Icon icon="carbon:add" />
               </Button>
-              {Object.keys(members).map((id) => {
+              {Object.keys(members).map((id, index) => {
                 if (!task.assignees.includes(id))
                   return (
                     <Member
-                      key={id}
+                      key={index}
                       member={members[id]}
                       id={id}
                       type="taskAdd"
@@ -79,7 +79,7 @@ const TaskCard = ({ task, index }) => {
                   );
                 return (
                   <Member
-                    key={id}
+                    key={index}
                     member={members[id]}
                     id={id}
                     type="taskAddDone"
@@ -102,8 +102,8 @@ const TaskCard = ({ task, index }) => {
           </TaskHead>
 
           {assignees.length > 0 ? (
-            assignees.map((member) => (
-              <Assigned>
+            assignees.map((member, index) => (
+              <Assigned key={index}>
                 <span>{members[member].full_name}</span>
                 <span>
                   <Icon

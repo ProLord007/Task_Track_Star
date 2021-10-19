@@ -16,6 +16,7 @@ import { addMemberOrg, createOrg } from "../../services/organizations";
 import { userSelector } from "../../slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllData, setOrgData } from "../../slices/orgsSlice";
+import { isLoading } from "../../slices/miscSlice";
 const JoinVariants = {
   hidden: { x: -300, opacity: 0 },
   visible: { x: 0, opacity: 1 },
@@ -78,6 +79,8 @@ const Box = ({ type, setSelected, selected }) => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
+    dispatch(isLoading(true));
+
     try {
       const response = await createOrg({
         creator: data.id,
@@ -85,21 +88,29 @@ const Box = ({ type, setSelected, selected }) => {
         desc: desc,
       });
       dispatch(setAllData(JSON.parse(response).data));
+      if (response) isLoading(false);
+
       // history.push(`/org/${data.id}`);
     } catch (e) {
+      dispatch(isLoading(false));
       return e.response;
     }
   };
   const handleJoin = async (e) => {
     e.preventDefault();
+    dispatch(isLoading(true));
+
     try {
       const response = await addMemberOrg({
         org_id: id,
         email: data.email,
       });
       dispatch(setOrgData(JSON.parse(response).data));
+      if (response) dispatch(isLoading(true));
+
       // history.push(`/org/${data.id}`);
     } catch (e) {
+      dispatch(isLoading(true));
       return e.response;
     }
   };

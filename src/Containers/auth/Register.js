@@ -5,6 +5,7 @@ import { Modal, Head, Form, LoginButton } from "../../Styles/auth/login";
 import CustomInput from "../../Components/auth/Input";
 import { registerUser } from "../../services/auth";
 import { setUserData } from "../../slices/userSlice";
+import { isLoading } from "../../slices/miscSlice";
 
 const Register = ({ size }) => {
   const [email, setEmail] = useState("");
@@ -80,6 +81,8 @@ const Register = ({ size }) => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    dispatch(isLoading(true));
+
     try {
       const response = await registerUser({
         email: email,
@@ -87,9 +90,10 @@ const Register = ({ size }) => {
         password: password,
       });
       dispatch(setUserData(response));
-      // history.push("/dashboard");
+      if (response) dispatch(isLoading(false));
     } catch (e) {
       console.log(e);
+      dispatch(isLoading(false));
     }
   };
 
