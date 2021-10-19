@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { addAssignee, changeStatus } from "../../services/organizations";
 import { membersSelector } from "../../slices/orgsSlice";
-import { userSelector } from "../../slices/userSlice";
+import { tokenSelector, userSelector } from "../../slices/userSlice";
 import { colors } from "../../utils/Colors";
 import Member from "./Member";
 
@@ -16,13 +16,18 @@ const TaskCard = ({ task, index }) => {
   const [assignees, setAssignees] = useState(task.assignees);
   const [add, setAdd] = useState(false);
   const [status, setStatus] = useState(task.status);
+  const authToken = useSelector(tokenSelector);
+
   const handleAddAssignee = async () => {
     if (selectedMembers.length > 0)
       try {
-        const response = await addAssignee({
-          task_id: task._id,
-          userArray: selectedMembers,
-        });
+        const response = await addAssignee(
+          {
+            task_id: task._id,
+            userArray: selectedMembers,
+          },
+          authToken
+        );
         setAssignees([...assignees, ...JSON.parse(response).data]);
         setAdd(false);
       } catch (err) {
@@ -40,11 +45,14 @@ const TaskCard = ({ task, index }) => {
   };
   const handleStatusChange = async () => {
     try {
-      const response = await changeStatus({
-        task_id: task._id,
-        user_id: user.id,
-        status: change(status),
-      });
+      const response = await changeStatus(
+        {
+          task_id: task._id,
+          user_id: user.id,
+          status: change(status),
+        },
+        authToken
+      );
       setStatus(JSON.parse(response).data);
     } catch (e) {
       console.log(e);

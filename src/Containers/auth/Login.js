@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
-
 import {
   Form,
   Head,
@@ -52,10 +50,10 @@ const Login = ({ size }) => {
     try {
       const response = await loginUser({ email, password });
       dispatch(setUserData(response));
-      console.log(response);
       const res = await getOrgData({ org_id: JSON.parse(response).org_id });
       if (res) {
         dispatch(isLoading(false));
+        console.log(res);
       }
       dispatch(setAllData(JSON.parse(res)));
       dispatch(setToken(JSON.parse(response).token));
@@ -67,11 +65,11 @@ const Login = ({ size }) => {
   };
   const responseGoogle = async (res) => {
     dispatch(isLoading(true));
-
     try {
       const response = await googleAuth({ token: res.tokenId });
+      console.log(response);
       dispatch(setUserData(response));
-      if (response) dispatch(isLoading(false));
+      dispatch(isLoading(false));
       // history.push("/dashboard");
     } catch (e) {
       console.log(e);
@@ -112,7 +110,7 @@ const Login = ({ size }) => {
         <LoginButton
           whileHover={{
             scale: [1, 1.05, 1],
-            transition: { yoyo: Infinity, duration: 0.5 },
+            transition: { repeat: Infinity, duration: 0.5 },
           }}
           type="submit"
           disabled={!validEmail || !validPassword}
@@ -128,8 +126,9 @@ const Login = ({ size }) => {
           clientId="307894135123-ufb7fmgsh0sqm56uqh126c12i651om7l.apps.googleusercontent.com"
           buttonText="Continue with Google"
           onSuccess={responseGoogle}
-          onFailure={responseGoogle}
+          // onFailure={responseGoogle}
           theme="light"
+          disabled={process.env.NODE_ENV === "development"}
         />
       </Form>
     </Modal>

@@ -28,7 +28,7 @@ const Router = () => {
         if (JSON.parse(response).org_id) {
           const res = await getOrgData({ org_id: JSON.parse(response).org_id });
           dispatch(setAllData(JSON.parse(res)));
-          if (res) dispatch(isLoading(false));
+          dispatch(isLoading(false));
         }
       } catch (e) {
         console.log(e);
@@ -38,6 +38,8 @@ const Router = () => {
     if (data) {
       dispatch(setToken(data));
       getUser();
+    } else {
+      dispatch(isLoading(false));
     }
   }, [dispatch]);
 

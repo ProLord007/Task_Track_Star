@@ -13,7 +13,7 @@ import { Icon } from "@iconify/react";
 import { colors } from "../../utils/Colors";
 import { motion } from "framer-motion";
 import { addMemberOrg, createOrg } from "../../services/organizations";
-import { userSelector } from "../../slices/userSlice";
+import { tokenSelector, userSelector } from "../../slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllData, setOrgData } from "../../slices/orgsSlice";
 import { isLoading } from "../../slices/miscSlice";
@@ -40,6 +40,7 @@ const Box = ({ type, setSelected, selected }) => {
   const [error, setError] = useState({ name: "", desc: "" });
   const [errorJoin, setErrorJoin] = useState("");
   const data = useSelector(userSelector);
+  const authToken = useSelector(tokenSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -82,11 +83,14 @@ const Box = ({ type, setSelected, selected }) => {
     dispatch(isLoading(true));
 
     try {
-      const response = await createOrg({
-        creator: data.id,
-        name: name,
-        desc: desc,
-      });
+      const response = await createOrg(
+        {
+          creator: data.id,
+          name: name,
+          desc: desc,
+        },
+        authToken
+      );
       dispatch(setAllData(JSON.parse(response).data));
       if (response) isLoading(false);
 
@@ -101,10 +105,13 @@ const Box = ({ type, setSelected, selected }) => {
     dispatch(isLoading(true));
 
     try {
-      const response = await addMemberOrg({
-        org_id: id,
-        email: data.email,
-      });
+      const response = await addMemberOrg(
+        {
+          org_id: id,
+          email: data.email,
+        },
+        authToken
+      );
       dispatch(setOrgData(JSON.parse(response).data));
       if (response) dispatch(isLoading(true));
 

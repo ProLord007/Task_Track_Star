@@ -33,4 +33,5 @@ export const Container = styled(motion.div)`
   background: ${colors.background};
   height: 100vh;
   display: flex;
+  overflow: none;
 `;

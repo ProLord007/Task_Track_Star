@@ -1,8 +1,10 @@
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { createTask } from "../../services/organizations";
+import { tokenSelector } from "../../slices/userSlice";
 import { colors } from "../../utils/Colors";
 import TaskCard from "./TaskCard";
 
@@ -11,16 +13,20 @@ const ListArea = ({ tasklist, tasks }) => {
   const [title, setTitle] = useState("");
   const [show, setShow] = useState(false);
   const [desc, setDesc] = useState("");
+  const authToken = useSelector(tokenSelector);
 
   const handleCreateTask = async (e) => {
     e.preventDefault();
     try {
-      const response = await createTask({
-        title: title,
-        tasklist_id: tasklist._id,
-        status: "progress",
-        desc: desc,
-      });
+      const response = await createTask(
+        {
+          title: title,
+          tasklist_id: tasklist._id,
+          status: "progress",
+          desc: desc,
+        },
+        authToken
+      );
       setTasksNew([...tasksNew, JSON.parse(response).data]);
       console.log(tasksNew);
       setShow(false);
@@ -75,7 +81,7 @@ export default ListArea;
 
 const Container = styled(motion.div)`
   background-color: ${colors.secondary};
-  margin: 10px;
+  margin: 0 7px;
   min-width: 250px;
   height: max-content;
 `;
@@ -86,15 +92,17 @@ const Header = styled(motion.div)`
   align-items: center;
   justify-content: space-between;
   border-bottom: 8px solid ${colors.secondaryAccent};
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 `;
 
 const Body = styled(motion.div)`
   padding: 3px;
+  height: 83vh;
+  overflow-y: scroll;
 `;
 
 const Button = styled(motion.button)`
-  margin-top: 5px;
+  margin: 5px 0;
   width: 235px;
   padding: 7px 0;
   font-weight: 500;

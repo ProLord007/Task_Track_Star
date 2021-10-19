@@ -6,7 +6,6 @@ import {
   removeMemberOrg,
 } from "../../services/organizations";
 import {
-  membersSelector,
   setMembers,
   setTasklists,
   tlSelector,
@@ -33,6 +32,7 @@ import {
   memberButtonSelector,
   removeMemberClick,
 } from "../../slices/miscSlice";
+import { tokenSelector } from "../../slices/userSlice";
 import { AnimatePresence } from "framer-motion";
 
 const Sidebar = ({ tasklists, orgData, members, tasks }) => {
@@ -42,7 +42,7 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
   const [member, setMember] = useState("");
   const [invalid, setInvalid] = useState(false);
   const tls = useSelector(tlSelector);
-  const mms = useSelector(membersSelector);
+  const authToken = useSelector(tokenSelector);
   const memberClicked = useSelector(memberButtonSelector);
   const dispatch = useDispatch();
   const handleAddClick = (e) => {
@@ -55,10 +55,13 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
     e.preventDefault();
     if (title && title.length >= 5)
       try {
-        const response = await createTasklist({
-          title: title,
-          org_id: orgData._id,
-        });
+        const response = await createTasklist(
+          {
+            title: title,
+            org_id: orgData._id,
+          },
+          authToken
+        );
         setShow(false);
         dispatch(setTasklists([...tls, JSON.parse(response).data]));
       } catch (err) {
@@ -70,10 +73,13 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
     e.preventDefault();
     if (member) {
       try {
-        const response = await addMemberOrg({
-          org_id: orgData._id,
-          email: member,
-        });
+        const response = await addMemberOrg(
+          {
+            org_id: orgData._id,
+            email: member,
+          },
+          authToken
+        );
         setMemberShow(false);
         dispatch(setMembers(JSON.parse(response).data));
       } catch (err) {
@@ -83,10 +89,13 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
   };
   const handleRemoveMember = async () => {
     try {
-      const response = await removeMemberOrg({
-        org_id: orgData._id,
-        user_id: memberClicked._id,
-      });
+      const response = await removeMemberOrg(
+        {
+          org_id: orgData._id,
+          user_id: memberClicked._id,
+        },
+        authToken
+      );
       dispatch(removeMemberClick());
       dispatch(removeMember(JSON.parse(response).data));
     } catch (err) {
