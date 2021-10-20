@@ -37,8 +37,7 @@ const Snackbar = ({ type, title }) => {
             : "bx:bxs-error-circle"
         }
         width="40"
-        color={colors.backgroundAccent}
-        style={{ flex: 0.3 }}
+        style={{ flex: 0.3, color: colors.backgroundAccent }}
       />
       <Title>{title}</Title>
     </Container>

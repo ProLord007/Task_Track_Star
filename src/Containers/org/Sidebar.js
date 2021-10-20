@@ -31,6 +31,7 @@ import { Icon } from "@iconify/react";
 import {
   memberButtonSelector,
   removeMemberClick,
+  openSnackbar,
 } from "../../slices/miscSlice";
 import { tokenSelector } from "../../slices/userSlice";
 import { AnimatePresence } from "framer-motion";
@@ -62,10 +63,27 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
           },
           authToken
         );
-        setShow(false);
-        dispatch(setTasklists([...tls, JSON.parse(response).data]));
+        if (JSON.parse(response).type === "success") {
+          setShow(false);
+          console.log(JSON.parse(response).data.data);
+          const tasklists = [...tls, JSON.parse(response).data.data];
+          dispatch(setTasklists(tasklists));
+          dispatch(
+            openSnackbar({
+              title: JSON.parse(response).data.message,
+              type: "success",
+            })
+          );
+        } else {
+          dispatch(
+            openSnackbar({
+              title: JSON.parse(response).message,
+              type: "error",
+            })
+          );
+        }
       } catch (err) {
-        console.log(err.response);
+        console.log(err);
       }
     else setInvalid(true);
   };
@@ -80,8 +98,23 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
           },
           authToken
         );
-        setMemberShow(false);
-        dispatch(setMembers(JSON.parse(response).data));
+        if (JSON.parse(response).type === "success") {
+          setMemberShow(false);
+          dispatch(setMembers(JSON.parse(response).data.data));
+          dispatch(
+            openSnackbar({
+              title: JSON.parse(response).data.message,
+              type: "success",
+            })
+          );
+        } else {
+          dispatch(
+            openSnackbar({
+              title: JSON.parse(response).message,
+              type: "error",
+            })
+          );
+        }
       } catch (err) {
         console.log(err.response);
       }
@@ -96,8 +129,24 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
         },
         authToken
       );
-      dispatch(removeMemberClick());
-      dispatch(removeMember(JSON.parse(response).data));
+      if (JSON.parse(response).type === "success") {
+        dispatch(removeMemberClick());
+        console.log(JSON.parse(response).data.data);
+        dispatch(removeMember(JSON.parse(response).data.data));
+        dispatch(
+          openSnackbar({
+            title: JSON.parse(response).data.message,
+            type: "success",
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            title: JSON.parse(response).message,
+            type: "error",
+          })
+        );
+      }
     } catch (err) {
       console.log(err);
     }

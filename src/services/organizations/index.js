@@ -34,9 +34,10 @@ export const removeMemberOrg = async (data, authToken) => {
         Authorization: `Bearer ${authToken}`,
       },
     });
-    return JSON.stringify(response.data);
+
+    return JSON.stringify({ data: response.data, type: "success" });
   } catch (e) {
-    console.log(e.response.data.error);
+    return JSON.stringify({ message: e.response.data.message, type: "error" });
   }
 };
 
@@ -62,9 +63,9 @@ export const createTasklist = async (data, authToken) => {
         Authorization: `Bearer ${authToken}`,
       },
     });
-    return JSON.stringify(response.data);
+    return JSON.stringify({ data: response.data, type: "success" });
   } catch (e) {
-    console.log(e.response.data.error);
+    return JSON.stringify({ message: e.response.data.message, type: "error" });
   }
 };
 
@@ -76,9 +77,9 @@ export const createTask = async (data, authToken) => {
         Authorization: `Bearer ${authToken}`,
       },
     });
-    return JSON.stringify(response.data);
+    return JSON.stringify({ data: response.data, type: "success" });
   } catch (e) {
-    console.log(e.response.data.error);
+    return JSON.stringify({ message: e.response.data.message, type: "error" });
   }
 };
 
@@ -90,9 +91,9 @@ export const addAssignee = async (data, authToken) => {
         Authorization: `Bearer ${authToken}`,
       },
     });
-    return JSON.stringify(response.data);
+    return JSON.stringify({ data: response.data, type: "success" });
   } catch (e) {
-    console.log(e.response.data.error);
+    return JSON.stringify({ message: e.response.data.message, type: "error" });
   }
 };
 
@@ -104,8 +105,8 @@ export const changeStatus = async (data, authToken) => {
         Authorization: `Bearer ${authToken}`,
       },
     });
-    return JSON.stringify(response.data);
+    return JSON.stringify({ data: response.data, type: "success" });
   } catch (e) {
-    console.log(e.response.data.error);
+    return JSON.stringify({ message: e.response.data.message, type: "error" });
   }
 };

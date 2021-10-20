@@ -38,15 +38,15 @@ export const orgsSlice = createSlice({
       const data = action.payload;
       console.log(data);
       if (data) {
-        state.members[data.id] = data;
+        state.members[data._id] = data;
       }
     },
     removeMember: (state, action) => {
       const data = action.payload;
       console.log(data);
       if (data) {
-        state.members[data.id] = null;
-        delete state.members[data.id];
+        state.members[data._id] = null;
+        delete state.members[data._id];
       }
     },
   },

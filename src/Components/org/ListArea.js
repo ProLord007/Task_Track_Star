@@ -1,11 +1,12 @@
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { createTask } from "../../services/organizations";
 import { tokenSelector } from "../../slices/userSlice";
 import { colors } from "../../utils/Colors";
+import { openSnackbar } from "../../slices/miscSlice";
 import TaskCard from "./TaskCard";
 
 const ListArea = ({ tasklist, tasks }) => {
@@ -14,6 +15,7 @@ const ListArea = ({ tasklist, tasks }) => {
   const [show, setShow] = useState(false);
   const [desc, setDesc] = useState("");
   const authToken = useSelector(tokenSelector);
+  const dispatch = useDispatch();
 
   const handleCreateTask = async (e) => {
     e.preventDefault();
@@ -27,9 +29,23 @@ const ListArea = ({ tasklist, tasks }) => {
         },
         authToken
       );
-      setTasksNew([...tasksNew, JSON.parse(response).data]);
-      console.log(tasksNew);
-      setShow(false);
+      if (JSON.parse(response).type === "success") {
+        setTasksNew([...tasksNew, JSON.parse(response).data.data]);
+        setShow(false);
+        dispatch(
+          openSnackbar({
+            title: JSON.parse(response).data.message,
+            type: "success",
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            title: JSON.parse(response).message,
+            type: "error",
+          })
+        );
+      }
     } catch (err) {
       console.log(err);
     }
@@ -69,9 +85,10 @@ const ListArea = ({ tasklist, tasks }) => {
       )}
 
       <Body>
-        {tasksNew.map((task, index) => (
-          <TaskCard key={index} task={task} index={index} />
-        ))}
+        {tasksNew &&
+          tasksNew.map((task, index) => (
+            <TaskCard key={index} task={task} index={index} />
+          ))}
       </Body>
     </Container>
   );

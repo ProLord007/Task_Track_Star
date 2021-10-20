@@ -1,11 +1,12 @@
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { addAssignee, changeStatus } from "../../services/organizations";
 import { membersSelector } from "../../slices/orgsSlice";
 import { tokenSelector, userSelector } from "../../slices/userSlice";
+import { openSnackbar } from "../../slices/miscSlice";
 import { colors } from "../../utils/Colors";
 import Member from "./Member";
 
@@ -17,6 +18,7 @@ const TaskCard = ({ task, index }) => {
   const [add, setAdd] = useState(false);
   const [status, setStatus] = useState(task.status);
   const authToken = useSelector(tokenSelector);
+  const dispatch = useDispatch();
 
   const handleAddAssignee = async () => {
     if (selectedMembers.length > 0)
@@ -28,8 +30,20 @@ const TaskCard = ({ task, index }) => {
           },
           authToken
         );
-        setAssignees([...assignees, ...JSON.parse(response).data]);
-        setAdd(false);
+        if (JSON.parse(response).type === "success") {
+          setAssignees([...assignees, ...JSON.parse(response).data.data]);
+          setAdd(false);
+          dispatch(
+            openSnackbar({
+              title: JSON.parse(response).data.message,
+              type: "success",
+            })
+          );
+        } else {
+          dispatch(
+            openSnackbar({ title: JSON.parse(response).message, type: "error" })
+          );
+        }
       } catch (err) {
         console.log(err);
       }
@@ -53,7 +67,22 @@ const TaskCard = ({ task, index }) => {
         },
         authToken
       );
-      setStatus(JSON.parse(response).data);
+      if (JSON.parse(response).type === "success") {
+        setStatus(JSON.parse(response).data.data);
+        dispatch(
+          openSnackbar({
+            title: JSON.parse(response).data.message,
+            type: "success",
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            title: JSON.parse(response).message,
+            type: "error",
+          })
+        );
+      }
     } catch (e) {
       console.log(e);
     }
@@ -112,7 +141,7 @@ const TaskCard = ({ task, index }) => {
           {assignees.length > 0 ? (
             assignees.map((member, index) => (
               <Assigned key={index}>
-                <span>{members[member].full_name}</span>
+                <span>{members[member]?.full_name}</span>
                 <span>
                   <Icon
                     icon="clarity:remove-solid"
