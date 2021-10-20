@@ -57,6 +57,7 @@ export const {
   setTasklists,
   setMembers,
   removeMember,
+  filterTasks,
 } = orgsSlice.actions;
 
 export const orgSelector = (state) => state.orgs.orgData;

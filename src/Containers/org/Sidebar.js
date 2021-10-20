@@ -10,6 +10,7 @@ import {
   setTasklists,
   tlSelector,
   removeMember,
+  filterTasks,
 } from "../../slices/orgsSlice";
 import Tasklist from "../../Components/org/Tasklist";
 import {
@@ -65,7 +66,6 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
         );
         if (JSON.parse(response).type === "success") {
           setShow(false);
-          console.log(JSON.parse(response).data.data);
           const tasklists = [...tls, JSON.parse(response).data.data];
           dispatch(setTasklists(tasklists));
           dispatch(
@@ -131,7 +131,6 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
       );
       if (JSON.parse(response).type === "success") {
         dispatch(removeMemberClick());
-        console.log(JSON.parse(response).data.data);
         dispatch(removeMember(JSON.parse(response).data.data));
         dispatch(
           openSnackbar({
