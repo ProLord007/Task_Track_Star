@@ -12,11 +12,15 @@ import {
 import { Icon } from "@iconify/react";
 import { colors } from "../../utils/Colors";
 import { motion } from "framer-motion";
-import { addMemberOrg, createOrg } from "../../services/organizations";
+import {
+  addMemberOrg,
+  createOrg,
+  getOrgData,
+} from "../../services/organizations";
 import { tokenSelector, userSelector } from "../../slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllData, setOrgData } from "../../slices/orgsSlice";
-import { isLoading } from "../../slices/miscSlice";
+import { isLoading, openSnackbar } from "../../slices/miscSlice";
 const JoinVariants = {
   hidden: { x: -300, opacity: 0 },
   visible: { x: 0, opacity: 1 },
@@ -81,7 +85,6 @@ const Box = ({ type, setSelected, selected }) => {
   const handleCreate = async (e) => {
     e.preventDefault();
     dispatch(isLoading(true));
-
     try {
       const response = await createOrg(
         {
@@ -91,10 +94,23 @@ const Box = ({ type, setSelected, selected }) => {
         },
         authToken
       );
-      dispatch(setAllData(JSON.parse(response).data));
-      if (response) isLoading(false);
-
-      // history.push(`/org/${data.id}`);
+      if (JSON.parse(response).type === "success") {
+        dispatch(setAllData(JSON.parse(response).data.data));
+        dispatch(
+          openSnackbar({
+            title: JSON.parse(response).data.message,
+            type: "success",
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({
+            title: JSON.parse(response).message,
+            type: "error",
+          })
+        );
+      }
+      dispatch(isLoading(false));
     } catch (e) {
       dispatch(isLoading(false));
       return e.response;
@@ -103,7 +119,6 @@ const Box = ({ type, setSelected, selected }) => {
   const handleJoin = async (e) => {
     e.preventDefault();
     dispatch(isLoading(true));
-
     try {
       const response = await addMemberOrg(
         {
@@ -112,12 +127,30 @@ const Box = ({ type, setSelected, selected }) => {
         },
         authToken
       );
-      dispatch(setOrgData(JSON.parse(response).data));
-      if (response) dispatch(isLoading(true));
-
-      // history.push(`/org/${data.id}`);
+      if (JSON.parse(response).type === "success") {
+        const res = await getOrgData({
+          org_id: id,
+        });
+        if (JSON.parse(res).type === "success") {
+          dispatch(setAllData(JSON.parse(res).data));
+          dispatch(
+            openSnackbar({ title: "Joined Successfully!", type: "success" })
+          );
+          dispatch(isLoading(false));
+        } else {
+          dispatch(
+            openSnackbar({ title: JSON.parse(res).message, type: "error" })
+          );
+          dispatch(isLoading(false));
+        }
+      } else {
+        dispatch(
+          openSnackbar({ title: JSON.parse(response).message, type: "error" })
+        );
+        dispatch(isLoading(false));
+      }
     } catch (e) {
-      dispatch(isLoading(true));
+      dispatch(isLoading(false));
       return e.response;
     }
   };
@@ -136,7 +169,7 @@ const Box = ({ type, setSelected, selected }) => {
             !selected
               ? {
                   rotateZ: [0, 0.8, -0.8, 0.8],
-                  transition: { duration: 0.5, yoyo: Infinity },
+                  transition: { duration: 0.5, repeat: Infinity },
                 }
               : {}
           }
@@ -173,6 +206,8 @@ const Box = ({ type, setSelected, selected }) => {
               variants={JoinVariants}
             >
               <label>ID of Organization</label>
+              <label>TestID - 616954b92dd028e4fa5449f3</label>
+
               <Input
                 type="text"
                 placeholder="ID"
@@ -198,7 +233,7 @@ const Box = ({ type, setSelected, selected }) => {
             !selected
               ? {
                   rotateZ: [0, 0.8, -0.8, 0.8],
-                  transition: { duration: 0.5, yoyo: Infinity },
+                  transition: { duration: 0.5, repeat: Infinity },
                 }
               : {}
           }

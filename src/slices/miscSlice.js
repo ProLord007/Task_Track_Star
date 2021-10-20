@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   member: null,
   loading: false,
-  loadingTitle: "",
+  snackbarOpened: false,
+  snackbarTitle: "",
+  snackbarType: "",
 };
 const miscSlice = createSlice({
   name: "others",
@@ -22,11 +24,33 @@ const miscSlice = createSlice({
     isLoading: (state, action) => {
       state.loading = action.payload;
     },
+    openSnackbar: (state, action) => {
+      state.snackbarOpened = true;
+      state.snackbarTitle = action.payload.title;
+      state.snackbarType = action.payload.type;
+    },
+    closeSnackbar: (state, action) => {
+      state.snackbarOpened = false;
+      state.snackbarTitle = "";
+      state.snackbarType = "";
+    },
   },
 });
 
-export const { setMemberClick, removeMemberClick, isLoading } =
-  miscSlice.actions;
+export const {
+  setMemberClick,
+  removeMemberClick,
+  isLoading,
+  openSnackbar,
+  closeSnackbar,
+} = miscSlice.actions;
 export const memberButtonSelector = (state) => state.others.member;
 export const loadingSelector = (state) => state.others.loading;
+export const snackbarSelector = (state) => {
+  return {
+    type: state.others.snackbarType,
+    status: state.others.snackbarOpened,
+    title: state.others.snackbarTitle,
+  };
+};
 export default miscSlice.reducer;

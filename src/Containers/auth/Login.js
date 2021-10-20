@@ -13,7 +13,7 @@ import { setToken, setUserData } from "../../slices/userSlice";
 import CustomInput from "../../Components/auth/Input";
 import { getOrgData } from "../../services/organizations";
 import { setAllData } from "../../slices/orgsSlice";
-import { isLoading } from "../../slices/miscSlice";
+import { isLoading, openSnackbar } from "../../slices/miscSlice";
 
 const Login = ({ size }) => {
   const [email, setEmail] = useState("");
@@ -49,17 +49,25 @@ const Login = ({ size }) => {
     dispatch(isLoading(true));
     try {
       const response = await loginUser({ email, password });
-      dispatch(setUserData(response));
-      const res = await getOrgData({ org_id: JSON.parse(response).org_id });
-      if (res) {
+      if (JSON.parse(response).type === "success") {
+        const data = JSON.parse(response).data;
+        dispatch(setUserData(data));
+        dispatch(openSnackbar({ title: "Login Successful", type: "success" }));
+        const res = await getOrgData({
+          org_id: data.org_id,
+        });
+        if (JSON.parse(res).type === "success") {
+          dispatch(isLoading(false));
+          dispatch(setAllData(JSON.parse(res).data));
+        }
+        dispatch(setToken(JSON.parse(response).data.token));
+      } else {
         dispatch(isLoading(false));
-        console.log(res);
+        dispatch(
+          openSnackbar({ title: JSON.parse(response).message, type: "error" })
+        );
       }
-      dispatch(setAllData(JSON.parse(res)));
-      dispatch(setToken(JSON.parse(response).token));
-      // history.push("/dashboard");
     } catch (e) {
-      console.log(e);
       dispatch(isLoading(false));
     }
   };
@@ -67,8 +75,10 @@ const Login = ({ size }) => {
     dispatch(isLoading(true));
     try {
       const response = await googleAuth({ token: res.tokenId });
-      console.log(response);
-      dispatch(setUserData(response));
+      if (response) {
+        dispatch(setUserData(response));
+        dispatch(openSnackbar({ title: "Login Successful!", type: "success" }));
+      }
       dispatch(isLoading(false));
       // history.push("/dashboard");
     } catch (e) {

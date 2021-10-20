@@ -5,7 +5,7 @@ import { Modal, Head, Form, LoginButton } from "../../Styles/auth/login";
 import CustomInput from "../../Components/auth/Input";
 import { registerUser } from "../../services/auth";
 import { setUserData } from "../../slices/userSlice";
-import { isLoading } from "../../slices/miscSlice";
+import { isLoading, openSnackbar } from "../../slices/miscSlice";
 
 const Register = ({ size }) => {
   const [email, setEmail] = useState("");
@@ -82,15 +82,24 @@ const Register = ({ size }) => {
   const handleRegister = async (e) => {
     e.preventDefault();
     dispatch(isLoading(true));
-
     try {
       const response = await registerUser({
         email: email,
         full_name: name,
         password: password,
       });
-      dispatch(setUserData(response));
-      if (response) dispatch(isLoading(false));
+      if (JSON.parse(response).type === "success") {
+        dispatch(setUserData(JSON.parse(response).data));
+        dispatch(isLoading(false));
+        dispatch(
+          openSnackbar({ title: "Register Successful", type: "success" })
+        );
+      } else {
+        dispatch(isLoading(false));
+        dispatch(
+          openSnackbar({ title: JSON.parse(response).message, type: "error" })
+        );
+      }
     } catch (e) {
       console.log(e);
       dispatch(isLoading(false));
@@ -153,7 +162,7 @@ const Register = ({ size }) => {
           }
           whileHover={{
             scale: [1, 1.05, 1],
-            transition: { yoyo: Infinity, duration: 0.5 },
+            transition: { repeat: Infinity, duration: 0.5 },
           }}
           onClick={() => {
             setValidatePassword(true);

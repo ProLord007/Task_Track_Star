@@ -167,7 +167,7 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
       <Container>
         {tasklists.map((tasklist, index) => (
           <Tasklist
-            key={tasklist._id}
+            key={index}
             title={tasklist.title}
             tasks={tasks}
             id={tasklist._id}
@@ -263,8 +263,8 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {Object.keys(members).map((id) => (
-            <Member key={id} member={members[id]} id={id} />
+          {Object.keys(members).map((id, index) => (
+            <Member key={index} member={members[id]} id={id} />
           ))}
         </AnimatePresence>
       </ContainerCircle>

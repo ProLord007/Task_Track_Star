@@ -11,7 +11,7 @@ export const userSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     setUserData: (state, action) => {
-      const data = JSON.parse(action.payload);
+      const data = action.payload;
       console.log(data);
       if (data) {
         state.userData = {

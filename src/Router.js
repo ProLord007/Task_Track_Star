@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import Landing from "./pages/landing.js";
 import Dashboard from "./pages/dashboard.js";
@@ -12,39 +12,78 @@ import Organization from "./pages/org.js";
 import { setAllData } from "./slices/orgsSlice.js";
 import { getOrgData } from "./services/organizations/index.js";
 import GuestGuard from "./utils/GuestGuard.js";
-import { isLoading, loadingSelector } from "./slices/miscSlice.js";
+import {
+  isLoading,
+  loadingSelector,
+  openSnackbar,
+  snackbarSelector,
+} from "./slices/miscSlice.js";
 import Loading from "./utils/Loading.js";
+import Snackbar from "./utils/Snackbar.js";
+import { AnimatePresence } from "framer-motion";
 
 const Router = () => {
   const dispatch = useDispatch();
   const loading = useSelector(loadingSelector);
-  useEffect(() => {
-    dispatch(isLoading(true));
-    const data = localStorage.getItem("token");
-    const getUser = async () => {
+  const snackbarData = useSelector(snackbarSelector);
+
+  const getUser = useCallback(
+    async (token) => {
       try {
-        const response = await getUserData();
-        dispatch(setUserData(response));
-        if (JSON.parse(response).org_id) {
-          const res = await getOrgData({ org_id: JSON.parse(response).org_id });
-          dispatch(setAllData(JSON.parse(res)));
+        const response = await getUserData(token);
+        if (JSON.parse(response).type === "success") {
+          const data = JSON.parse(response).data;
+          dispatch(setUserData(data));
+          if (data.org_id) {
+            const res = await getOrgData({
+              org_id: data.org_id,
+            });
+            if (JSON.parse(res).type === "success") {
+              dispatch(setAllData(JSON.parse(res).data));
+              dispatch(
+                openSnackbar({ title: "Login Successful", type: "success" })
+              );
+            } else {
+              dispatch(
+                openSnackbar({ title: JSON.parse(res).message, type: "error" })
+              );
+              dispatch(isLoading(false));
+            }
+          } else {
+            dispatch(
+              openSnackbar({
+                title: "Join or Create Organization",
+                type: "inform",
+              })
+            );
+          }
           dispatch(isLoading(false));
         }
       } catch (e) {
-        console.log(e);
         dispatch(isLoading(false));
       }
-    };
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    dispatch(isLoading(true));
+    const data = localStorage.getItem("token");
     if (data) {
       dispatch(setToken(data));
-      getUser();
+      getUser(data);
     } else {
       dispatch(isLoading(false));
     }
-  }, [dispatch]);
+  }, [dispatch, getUser]);
 
   return (
     <>
+      <AnimatePresence>
+        {snackbarData.status && (
+          <Snackbar title={snackbarData.title} type={snackbarData.type} />
+        )}
+      </AnimatePresence>
       {loading ? (
         <Loading type="Loading..." />
       ) : (

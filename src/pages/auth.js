@@ -40,7 +40,7 @@ const Auth = () => {
               onClick={() => history.push("/auth/register")}
               animate={{
                 scale: [1.05, 1],
-                transition: { yoyo: Infinity, duration: 0.5 },
+                transition: { repeat: Infinity, duration: 0.5 },
               }}
             >
               Register
@@ -66,7 +66,7 @@ const Auth = () => {
               onClick={() => history.push("/auth/login")}
               animate={{
                 scale: [1.05, 1],
-                transition: { yoyo: Infinity, duration: 0.5 },
+                transition: { repeat: Infinity, duration: 0.5 },
               }}
             >
               Login

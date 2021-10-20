@@ -6,9 +6,9 @@ export const createOrg = async (data, authToken) => {
       Authorization: `Bearer ${authToken}`,
       headers: { "Content-Type": "application/json" },
     });
-    return JSON.stringify(response.data);
+    return JSON.stringify({ data: response.data, type: "success" });
   } catch (e) {
-    console.log(e.response.data.error);
+    return JSON.stringify({ message: e.response.data.message, type: "error" });
   }
 };
 
@@ -20,9 +20,9 @@ export const addMemberOrg = async (data, authToken) => {
         Authorization: `Bearer ${authToken}`,
       },
     });
-    return JSON.stringify(response.data);
+    return JSON.stringify({ data: response.data, type: "success" });
   } catch (e) {
-    console.log(e.response.data.error);
+    return JSON.stringify({ message: e.response.data.message, type: "error" });
   }
 };
 
@@ -48,9 +48,9 @@ export const getOrgData = async (data, authToken) => {
         Authorization: `Bearer ${authToken}`,
       },
     });
-    return JSON.stringify(response.data);
+    return JSON.stringify({ data: response.data, type: "success" });
   } catch (e) {
-    console.log(e.response.data.error);
+    return JSON.stringify({ message: e.response.data.message, type: "error" });
   }
 };
 
