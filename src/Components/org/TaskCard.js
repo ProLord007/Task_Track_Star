@@ -3,10 +3,15 @@ import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { addAssignee, changeStatus } from "../../services/organizations";
+import {
+  addAssignee,
+  changeStatus,
+  removeMemberTask,
+} from "../../services/organizations";
 import { membersSelector } from "../../slices/orgsSlice";
 import { tokenSelector, userSelector } from "../../slices/userSlice";
 import { openSnackbar } from "../../slices/miscSlice";
+import { orgSelector } from "../../slices/orgsSlice";
 import { colors } from "../../utils/Colors";
 import Member from "./Member";
 
@@ -17,9 +22,38 @@ const TaskCard = ({ task, index }) => {
   const [assignees, setAssignees] = useState(task.assignees);
   const [add, setAdd] = useState(false);
   const [status, setStatus] = useState(task.status);
+  const org = useSelector(orgSelector);
   const authToken = useSelector(tokenSelector);
   const dispatch = useDispatch();
 
+  const handleRemoveMember = async (id) => {
+    try {
+      const response = await removeMemberTask(
+        {
+          task_id: task._id,
+          request_user_id: user.id,
+          user_id: id,
+          org_id: org._id,
+        },
+        authToken
+      );
+      if (JSON.parse(response).type === "success") {
+        setAssignees(JSON.parse(response).data.data.assignees);
+        dispatch(
+          openSnackbar({
+            title: JSON.parse(response).data.message,
+            type: "success",
+          })
+        );
+      } else {
+        dispatch(
+          openSnackbar({ title: JSON.parse(response).message, type: "error" })
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const handleAddAssignee = async () => {
     if (selectedMembers.length > 0)
       try {
@@ -146,6 +180,7 @@ const TaskCard = ({ task, index }) => {
                   <Icon
                     icon="clarity:remove-solid"
                     style={{ cursor: "pointer" }}
+                    onClick={() => handleRemoveMember(member)}
                   />
                 </span>
               </Assigned>

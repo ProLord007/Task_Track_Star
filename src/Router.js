@@ -34,7 +34,7 @@ const Router = () => {
         if (JSON.parse(response).type === "success") {
           const data = JSON.parse(response).data;
           dispatch(setUserData(data));
-          if (data.org_id) {
+          if (data.org_id !== null) {
             const res = await getOrgData({
               org_id: data.org_id,
             });

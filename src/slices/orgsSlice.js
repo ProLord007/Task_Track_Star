@@ -43,7 +43,6 @@ export const orgsSlice = createSlice({
     },
     removeMember: (state, action) => {
       const data = action.payload;
-      console.log(data);
       if (data) {
         state.members[data._id] = null;
         delete state.members[data._id];

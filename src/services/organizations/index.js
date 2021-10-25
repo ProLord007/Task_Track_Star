@@ -110,3 +110,16 @@ export const changeStatus = async (data, authToken) => {
     return JSON.stringify({ message: e.response.data.message, type: "error" });
   }
 };
+export const removeMemberTask = async (data, authToken) => {
+  try {
+    const response = await api.post("/orgs/remove-member-task", data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return JSON.stringify({ data: response.data, type: "success" });
+  } catch (e) {
+    return JSON.stringify({ message: e.response.data.message, type: "error" });
+  }
+};

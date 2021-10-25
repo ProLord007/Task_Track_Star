@@ -23,9 +23,9 @@ const Tasklist = ({ id, title, tasks }) => {
             {tasks[id]
               .filter((task) => task.tasklist_id === id)
               .map((task, index) => (
-                <span key={index}>
-                  {index + 1} {task.title}
-                </span>
+                <TaskName key={index}>
+                  <span>{index + 1}</span> <span>{task.title}</span>
+                </TaskName>
               ))}
           </ContainerTasks>
         ) : (
@@ -59,9 +59,17 @@ const Container = styled(motion.div)`
 
 const ContainerTasks = styled(motion.div)`
   /* overflow-y: scroll; */
+  align-items: flex-end;
   text-align: center;
   font-size: 14px;
   flex-direction: column;
   display: flex;
   color: ${colors.primaryAccent};
+`;
+
+const TaskName = styled.div`
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 30px;
 `;

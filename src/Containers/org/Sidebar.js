@@ -34,7 +34,7 @@ import {
   removeMemberClick,
   openSnackbar,
 } from "../../slices/miscSlice";
-import { tokenSelector } from "../../slices/userSlice";
+import { tokenSelector, userSelector } from "../../slices/userSlice";
 import { AnimatePresence } from "framer-motion";
 
 const Sidebar = ({ tasklists, orgData, members, tasks }) => {
@@ -45,6 +45,7 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
   const [invalid, setInvalid] = useState(false);
   const tls = useSelector(tlSelector);
   const authToken = useSelector(tokenSelector);
+  const user = useSelector(userSelector);
   const memberClicked = useSelector(memberButtonSelector);
   const dispatch = useDispatch();
   const handleAddClick = (e) => {
@@ -126,6 +127,7 @@ const Sidebar = ({ tasklists, orgData, members, tasks }) => {
         {
           org_id: orgData._id,
           user_id: memberClicked._id,
+          request_user_id: user.id,
         },
         authToken
       );
