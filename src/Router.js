@@ -35,9 +35,12 @@ const Router = () => {
           const data = JSON.parse(response).data;
           dispatch(setUserData(data));
           if (data.org_id !== null) {
-            const res = await getOrgData({
-              org_id: data.org_id,
-            });
+            const res = await getOrgData(
+              {
+                org_id: data.org_id,
+              },
+              token
+            );
             if (JSON.parse(res).type === "success") {
               dispatch(setAllData(JSON.parse(res).data));
               dispatch(

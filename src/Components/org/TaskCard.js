@@ -65,7 +65,7 @@ const TaskCard = ({ task, index }) => {
           authToken
         );
         if (JSON.parse(response).type === "success") {
-          setAssignees([...assignees, ...JSON.parse(response).data.data]);
+          setAssignees(JSON.parse(response).data.data);
           setAdd(false);
           dispatch(
             openSnackbar({
@@ -137,7 +137,7 @@ const TaskCard = ({ task, index }) => {
                 <Icon icon="carbon:add" />
               </Button>
               {Object.keys(members).map((id, index) => {
-                if (!task.assignees.includes(id))
+                if (!assignees.includes(id))
                   return (
                     <Member
                       key={index}
