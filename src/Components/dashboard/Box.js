@@ -19,7 +19,7 @@ import {
 } from "../../services/organizations";
 import { tokenSelector, userSelector } from "../../slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setAllData, setOrgData } from "../../slices/orgsSlice";
+import { setAllData } from "../../slices/orgsSlice";
 import { isLoading, openSnackbar } from "../../slices/miscSlice";
 const JoinVariants = {
   hidden: { x: -300, opacity: 0 },

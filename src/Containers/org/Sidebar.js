@@ -10,7 +10,6 @@ import {
   setTasklists,
   tlSelector,
   removeMember,
-  filterTasks,
 } from "../../slices/orgsSlice";
 import Tasklist from "../../Components/org/Tasklist";
 import {
